@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteNote } from '@/lib/api/notes';
 import { Note } from '@/types/note';
-import styles from './NoteCard.module.css';
+import styles from './NotePreview.module.css';
 
-export default function NoteCard({ note }: { note: Note }) {
+export default function NotePreview({ note }: { note: Note }) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
