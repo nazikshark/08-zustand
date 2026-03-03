@@ -7,13 +7,19 @@ export const metadata: Metadata = {
   description: 'Створіть нову нотатку та збережіть свої ідеї.',
 };
 
+// Створюємо маленьку обгортку, щоб бути впевненими, що клієнтська логіка ізольована
+function NoteFormWrapper() {
+  return <NoteForm />;
+}
+
 export default function CreateNotePage() {
   return (
     <main style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '32px' }}>Створити нову нотатку</h1>
-      {/* Огортаємо форму в Suspense, щоб Vercel не сварився на useSearchParams */}
-      <Suspense fallback={<div>Завантаження форми...</div>}>
-        <NoteForm />
+      
+      {/* Ключовий момент: Suspense має огортати ВСЕ, що використовує useSearchParams */}
+      <Suspense fallback={<div style={{ textAlign: 'center' }}>Завантаження форми...</div>}>
+        <NoteFormWrapper />
       </Suspense>
     </main>
   );
