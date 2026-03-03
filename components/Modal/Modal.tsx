@@ -30,7 +30,13 @@ const Modal = ({ children, onClose }: ModalProps) => {
 
   return createPortal(
     <div className={css.backdrop} onClick={handleBackdropClick}>
-      <div className={css.modal}>{children}</div>
+      <div className={css.modal}>
+        {/* Додамо кнопку закриття для зручності */}
+        <button className={css.closeButton} onClick={onClose} aria-label="Close">
+          &times;
+        </button>
+        {children}
+      </div>
     </div>,
     document.body
   );
