@@ -1,8 +1,6 @@
 /// <reference types="next" />
-/// <reference types="next/navigation" />
 /// <reference types="next/image-types/global" />
+import "./.next/types/routes.d.ts";
 
-declare module '*.module.css' {
-  const classes: { [key: string]: string };
-  export default classes;
-}
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
