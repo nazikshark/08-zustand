@@ -1,3 +1,4 @@
+import { Suspense } from 'react'; // Імпортуємо Suspense
 import Header from '@/components/Header/Header';
 import SidebarNotes from '@/components/SidebarNotes/SidebarNotes';
 
@@ -10,7 +11,11 @@ export default function NotesLayout({
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Header />
       <div style={{ display: 'flex', flex: 1 }}>
-        <SidebarNotes />
+        {/* Огортаємо SidebarNotes, щоб ізолювати useSearchParams */}
+        <Suspense fallback={<div style={{ width: '200px', padding: '20px' }}>Loading...</div>}>
+          <SidebarNotes />
+        </Suspense>
+        
         <main style={{ flex: 1, padding: '20px' }}>
           {children}
         </main>
