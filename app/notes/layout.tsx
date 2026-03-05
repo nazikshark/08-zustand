@@ -1,23 +1,33 @@
-import { Suspense } from 'react';
-import Header from '@/components/Header/Header';
-import SidebarNotes from '@/components/SidebarNotes/SidebarNotes';
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+import "./globals.css";
+import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 
-export default function NotesLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Notes App",
+  description: "Manage your notes effectively",
+  openGraph: {
+    title: "Notes App",
+    description: "Manage your notes effectively",
+    url: "https://notes-app.vercel.app",
+    images: [{ url: "https://notes-app.vercel.app/og-image.png" }],
+    type: "website",
+  },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header />
-      <div style={{ display: 'flex', flex: 1 }}>
-        <Suspense fallback={<div style={{ width: '200px', padding: '20px' }}>Loading...</div>}>
-          <SidebarNotes />
-        </Suspense>
-        <main style={{ flex: 1, padding: '20px' }}>
-          {children}
-        </main>
-      </div>
-    </div>
+    <html lang="en">
+      <body className={roboto.className}>
+        <TanStackProvider>{children}</TanStackProvider>
+      </body>
+    </html>
   );
 }

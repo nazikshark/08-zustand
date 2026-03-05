@@ -1,32 +1,22 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import React from 'react';
 
-export default function SearchBox() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+interface SearchBoxProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  const handleSearch = (term: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (term) {
-      params.set('search', term);
-    } else {
-      params.delete('search');
-    }
-    params.set('page', '1'); // При пошуку завжди повертаємо на 1 сторінку
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
+export default function SearchBox({ value, onChange }: SearchBoxProps) {
   return (
     <input
       type="text"
       placeholder="Search notes..."
-      defaultValue={searchParams.get('search')?.toString()}
-      onChange={(e) => handleSearch(e.target.value)}
+      value={value}
+      onChange={onChange}
       style={{ 
         padding: '10px', 
-        width: '100%', 
+        width: '250px', 
         borderRadius: '8px', 
         border: '1px solid #ccc' 
       }}

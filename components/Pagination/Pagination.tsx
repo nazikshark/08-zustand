@@ -1,37 +1,33 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import React from 'react';
 
+// Обов'язково додаємо ці поля в інтерфейс, щоб TS не сварився
 interface PaginationProps {
   totalPages: number;
+  currentPage: number; 
+  onPageChange: (page: number) => void;
 }
 
-export default function Pagination({ totalPages }: PaginationProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) || 1;
-
-  const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', page.toString());
-    router.push(`${pathname}?${params.toString()}`);
-  };
-
+export default function Pagination({ totalPages, currentPage, onPageChange }: PaginationProps) {
   if (totalPages <= 1) return null;
+
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <div style={{ display: 'flex', gap: '8px', marginTop: '20px', justifyContent: 'center' }}>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+      {pages.map((p) => (
         <button
           key={p}
-          onClick={() => handlePageChange(p)}
+          onClick={() => onPageChange(p)}
           style={{ 
-            padding: '5px 10px',
+            padding: '8px 12px',
             fontWeight: currentPage === p ? 'bold' : 'normal',
-            backgroundColor: currentPage === p ? '#eee' : 'white',
+            backgroundColor: currentPage === p ? '#0070f3' : 'white',
+            color: currentPage === p ? 'white' : 'black',
             cursor: 'pointer',
-            borderRadius: '4px'
+            borderRadius: '4px',
+            border: '1px solid #ccc'
           }}
         >
           {p}

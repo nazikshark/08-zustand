@@ -9,9 +9,18 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const note = await getNoteById(id);
+  const title = `Note: ${note?.title || "Details"}`;
+  const description = note?.content?.substring(0, 100) || "Note details";
+
   return {
-    title: `Note: ${note?.title || "Details"}`,
-    description: `Details for note ${id}`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://notes-app.vercel.app/notes/${id}`,
+      images: [{ url: "https://notes-app.vercel.app/og-image.png" }],
+    },
   };
 }
 
