@@ -1,5 +1,20 @@
-import { instance } from './client';
+import axios from 'axios';
 import { Note, NoteDraft } from '@/types/note';
+
+export const instance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+instance.interceptors.request.use((config) => {
+  const token = process.env.NEXT_PUBLIC_API_TOKEN;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export interface NotesResponse {
   notes: Note[];
@@ -8,7 +23,12 @@ export interface NotesResponse {
 
 export const getNotes = async (page = 1, search = '', tag = ''): Promise<NotesResponse> => {
   const { data } = await instance.get<NotesResponse>('/notes', {
-    params: { page, search, tag: tag === 'all' || !tag ? '' : tag, perPage: 6 }
+    params: { 
+      page, 
+      search, 
+      tag: tag === 'all' || !tag ? '' : tag, 
+      perPage: 6 
+    }
   });
   return data;
 };

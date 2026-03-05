@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { getNoteById } from '@/lib/api/notes';
+import { getNoteById } from '@/lib/api';
 
 export default function NoteDetailsPage() {
   const params = useParams();

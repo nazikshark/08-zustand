@@ -1,5 +1,6 @@
 'use client';
 
+import { use } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getNotes } from '@/lib/api';
@@ -7,23 +8,24 @@ import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 
-export default function App() {
+export default function NotesClient({ params }: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = use(params);
   const searchParams = useSearchParams();
 
-  const page = Number(searchParams.get('page')) || 1;
+  const tag = slug[0] || 'all';
+  const pageFromSlug = Number(slug[1]) || 1;
   const search = searchParams.get('search') || '';
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', page, search],
-    queryFn: () => getNotes(page, search),
+    queryKey: ['notes', tag, pageFromSlug, search],
+    queryFn: () => getNotes(pageFromSlug, search, tag),
   });
 
-  if (isError) return <div style={{ color: 'red', padding: '20px' }}>Error loading notes</div>;
+  if (isError) return <div style={{ color: 'red' }}>Error loading notes</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <SearchBox />
-
       {isLoading ? (
         <p>Loading...</p>
       ) : (
