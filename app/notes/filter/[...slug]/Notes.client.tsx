@@ -10,17 +10,16 @@ import Link from 'next/link';
 
 interface NotesClientProps {
   tag: string;
-  initialPage: number;
 }
 
-export default function NotesClient({ tag, initialPage }: NotesClientProps) {
+export default function NotesClient({ tag }: NotesClientProps) {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setCurrentPage(initialPage);
-  }, [tag, initialPage]);
+    setCurrentPage(1);
+  }, [tag]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -31,8 +30,8 @@ export default function NotesClient({ tag, initialPage }: NotesClientProps) {
   }, [search]);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', tag, currentPage, debouncedSearch],
-    queryFn: () => getNotes(currentPage, debouncedSearch, tag),
+    queryKey: ['notes', currentPage, debouncedSearch, tag],
+    queryFn: () => getNotes(currentPage, debouncedSearch, tag), 
   });
 
   const hasNotes = !!(data?.notes && data.notes.length > 0);
@@ -42,7 +41,7 @@ export default function NotesClient({ tag, initialPage }: NotesClientProps) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <SearchBox 
           value={search} 
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)} 
+          onChange={(value: string) => setSearch(value)}
         />
         
         <Link 
