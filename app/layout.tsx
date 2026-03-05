@@ -1,13 +1,23 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import type { Metadata } from "next";
+import { Roboto } from "next/font/google";
+import "./globals.css";
+import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 
-const inter = Inter({ subsets: ['latin'] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: 'NoteHub | Твій цифровий блокнот',
-  description: 'Плануй переїзд у вічне літо разом із нами',
+  title: "Notes App",
+  description: "Manage your notes effectively",
+  openGraph: {
+    title: "Notes App",
+    description: "Manage your notes effectively",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -16,11 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="uk">
-      <body className={inter.className}>
-        <TanStackProvider>
-          {children}
-        </TanStackProvider>
+    <html lang="en">
+      <body className={roboto.className}>
+        <TanStackProvider>{children}</TanStackProvider>
       </body>
     </html>
   );

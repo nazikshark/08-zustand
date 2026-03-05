@@ -1,21 +1,19 @@
-'use client';
+import type { Metadata } from "next";
+import NoteForm from "@/components/NoteForm/NoteForm";
+import { Suspense } from "react";
 
-import { Suspense } from 'react';
-import NoteForm from '@/components/NoteForm/NoteForm';
-
-function CreateNoteContent() {
-  return (
-    <main style={{ padding: '40px 20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '32px' }}>Створити нову нотатку</h1>
-      <NoteForm />
-    </main>
-  );
-}
+export const metadata: Metadata = {
+  title: "Create Note",
+  description: "Add a new note to your list",
+};
 
 export default function CreateNotePage() {
   return (
-    <Suspense fallback={<div style={{ textAlign: 'center', padding: '50px' }}>Завантаження форми...</div>}>
-      <CreateNoteContent />
-    </Suspense>
+    <main>
+      <h1>Create New Note</h1>
+      <Suspense fallback={<div>Loading form...</div>}>
+        <NoteForm />
+      </Suspense>
+    </main>
   );
 }

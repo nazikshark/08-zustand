@@ -1,38 +1,20 @@
-'use client';
+import type { Metadata } from "next";
+import { getNoteById } from "@/lib/api";
+import NoteDetailsClient from "./NoteDetails.client";
 
-import { useParams, useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
-import { getNoteById } from '@/lib/api';
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
-export default function NoteDetailsPage() {
-  const params = useParams();
-  const router = useRouter();
-  const id = params.id as string;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const note = await getNoteById(id);
+  return {
+    title: `Note: ${note?.title || "Details"}`,
+    description: `Details for note ${id}`,
+  };
+}
 
-  const { data: note, isLoading, isError } = useQuery({
-    queryKey: ['note', id],
-    queryFn: () => getNoteById(id),
-    enabled: !!id,
-  });
-
-  if (isLoading) return <div>Завантаження нотатки...</div>;
-  if (isError) return <div>Нотатку не знайдено.</div>;
-
-  return (
-    <article style={{ maxWidth: '600px' }}>
-      <button 
-        onClick={() => router.back()} 
-        style={{ marginBottom: '20px', cursor: 'pointer' }}
-      >
-        ← Назад
-      </button>
-      <header>
-        <span style={{ background: '#eee', padding: '4px 8px', borderRadius: '4px', fontSize: '12px' }}>
-          {note?.tag}
-        </span>
-        <h1 style={{ margin: '15px 0' }}>{note?.title}</h1>
-      </header>
-      <p style={{ lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{note?.content}</p>
-    </article>
-  );
+export default function Page({ params }: Props) {
+  return <NoteDetailsClient params={params} />;
 }

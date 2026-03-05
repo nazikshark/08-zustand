@@ -20,10 +20,22 @@ export default function NoteForm() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!draft.title.trim() || !draft.content.trim()) return;
     mutation.mutate(draft);
+  };
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDraft({ title: e.target.value });
+  };
+
+  const handleTagChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDraft({ tag: e.target.value });
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDraft({ content: e.target.value });
   };
 
   return (
@@ -33,24 +45,25 @@ export default function NoteForm() {
         placeholder="Title"
         className={styles.input}
         value={draft.title}
-        onChange={(e) => setDraft({ title: e.target.value })}
+        onChange={handleTitleChange}
         required
       />
       <select 
         className={styles.select}
         value={draft.tag} 
-        onChange={(e) => setDraft({ tag: e.target.value })}
+        onChange={handleTagChange}
       >
         <option value="Todo">Todo</option>
         <option value="Work">Work</option>
         <option value="Personal">Personal</option>
-        <option value="Health">Health</option>
+        <option value="Meeting">Meeting</option>
+        <option value="Shopping">Shopping</option>
       </select>
       <textarea
         placeholder="Content"
         className={styles.textarea}
         value={draft.content}
-        onChange={(e) => setDraft({ content: e.target.value })}
+        onChange={handleContentChange}
         required
       />
       <div className={styles.actions}>
