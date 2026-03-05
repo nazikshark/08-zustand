@@ -1,11 +1,33 @@
 'use client';
 
-export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+import { useEffect } from 'react';
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
       <h2 style={{ color: 'red' }}>Щось пішло не так!</h2>
-      <p>{error.message}</p>
-      <button onClick={() => reset()} style={{ marginTop: '10px', padding: '8px 16px' }}>
+      <button
+        onClick={() => reset()}
+        style={{
+          marginTop: '10px',
+          padding: '8px 16px',
+          backgroundColor: '#0070f3',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+        }}
+      >
         Спробувати знову
       </button>
     </div>
