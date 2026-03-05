@@ -18,12 +18,10 @@ export default function NotesClient({ tag, initialPage }: NotesClientProps) {
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  // Скидаємо стейт при зміні тегу в URL
   useEffect(() => {
     setCurrentPage(initialPage);
   }, [tag, initialPage]);
 
-  // Дебаунс логіка
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
@@ -36,6 +34,8 @@ export default function NotesClient({ tag, initialPage }: NotesClientProps) {
     queryKey: ['notes', tag, currentPage, debouncedSearch],
     queryFn: () => getNotes(currentPage, debouncedSearch, tag),
   });
+
+  const hasNotes = !!(data?.notes && data.notes.length > 0);
 
   return (
     <div style={{ padding: '20px' }}>
@@ -65,12 +65,15 @@ export default function NotesClient({ tag, initialPage }: NotesClientProps) {
         <p>Loading...</p>
       ) : (
         <>
-          <NoteList notes={data?.notes || []} />
-          <Pagination 
-            totalPages={data?.totalPages || 1} 
-            currentPage={currentPage} 
-            onPageChange={(page: number) => setCurrentPage(page)} 
-          />
+          {hasNotes ? <NoteList notes={data.notes} /> : <p>No notes found.</p>}
+          
+          {hasNotes && (
+            <Pagination 
+              totalPages={data.totalPages || 1} 
+              currentPage={currentPage} 
+              onPageChange={(page: number) => setCurrentPage(page)} 
+            />
+          )}
         </>
       )}
     </div>

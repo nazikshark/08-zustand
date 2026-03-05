@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Notes App",
     description: "Manage your notes effectively",
+    url: "https://notes-app-2026.vercel.app", 
+    images: [
+      {
+        url: "https://notes-app-2026.vercel.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Notes App Preview",
+      },
+    ],
     type: "website",
   },
 };
